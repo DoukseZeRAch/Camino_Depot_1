@@ -1,0 +1,93 @@
+{% extends "admin_interface/base.html" %}
+{% load static %}
+{% block title %}Liste des Utilisateurs{% endblock %}
+
+{% block content %}
+<div class="container py-6">
+    <!-- Tableau des utilisateurs -->
+    <div class="card">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="py-3 px-6 text-left text-sm font-semibold text-gray-900">Nom complet</th>
+                    <th scope="col" class="py-3 px-6 text-left text-sm font-semibold text-gray-900">Email</th>
+                    <th scope="col" class="py-3 px-6 text-left text-sm font-semibold text-gray-900">Rôle</th>
+                    <th scope="col" class="py-3 px-6 text-left text-sm font-semibold text-gray-900">Statut</th>
+                    <th scope="col" class="py-3 px-6 text-right text-sm font-semibold text-gray-900">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+                {% for user in users %}
+                <tr>
+                    <td class="py-4 px-6 text-sm font-medium text-gray-900">{{ user.full_name }}</td>
+                    <td class="py-4 px-6 text-sm text-gray-500">{{ user.email }}</td>
+                    <td class="py-4 px-6 text-sm text-gray-500">{{ user.role }}</td>
+                    <td class="py-4 px-6">
+                        {% if user.is_active %}
+                            <span class="badge badge-success">Actif</span>
+                        {% else %}
+                            <span class="badge badge-error">Inactif</span>
+                        {% endif %}
+                    </td>
+                    <td class="py-4 px-6 text-right">
+                        <a href="{% url 'user_detail' user.id %}" class="text-blue-600 hover:text-blue-900">Voir</a>
+                        <a href="{% url 'user_edit' user.id %}" class="ml-3 text-blue-600 hover:text-blue-900">Éditer</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="py-4 px-6 text-center text-sm text-gray-500">Aucun utilisateur trouvé.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="mt-6 flex justify-between border-t border-gray-200 pt-4">
+        <div>
+            <p class="text-sm text-gray-700">
+                Affichage de {{ page_obj.start_index }} à {{ page_obj.end_index }} sur {{ paginator.count }} utilisateurs.
+            </p>
+        </div>
+        <div>
+            <nav class="inline-flex -space-x-px" aria-label="Pagination">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn">Précédent</a>
+                {% endif %}
+                {% for num in paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <span class="btn btn-primary">{{ num }}</span>
+                    {% else %}
+                    <a href="?page={{ num }}" class="btn">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn">Suivant</a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("Page de la liste des utilisateurs chargée.");
+
+        // Ajout d'une confirmation avant suppression
+        const deleteButtons = document.querySelectorAll('.delete-user-btn');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                const confirmDelete = confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?");
+                if (!confirmDelete) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
+

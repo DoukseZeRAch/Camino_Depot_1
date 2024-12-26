@@ -1,0 +1,112 @@
+{% extends "admin_interface/base.html" %}
+{% load static %}
+{% block title %}Détails de la Roadmap{% endblock %}
+
+{% block content %}
+<div class="container py-6">
+    <!-- En-tête -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-semibold text-gray-900">Détails de la Roadmap</h1>
+        <p class="mt-1 text-sm text-gray-500">Visualisez toutes les informations concernant cette roadmap.</p>
+    </div>
+
+    <!-- Détails de la Roadmap -->
+    <div class="card">
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+            <!-- Nom de la Roadmap -->
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Nom</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ roadmap.name }}</dd>
+            </div>
+
+            <!-- Description -->
+            <div class="sm:col-span-2">
+                <dt class="text-sm font-medium text-gray-500">Description</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ roadmap.description }}</dd>
+            </div>
+
+            <!-- Auteur -->
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Auteur</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ roadmap.author.username }}</dd>
+            </div>
+
+            <!-- Date de Création -->
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Date de Création</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ roadmap.created_at|date:"d/m/Y H:i" }}</dd>
+            </div>
+
+            <!-- Statut -->
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Statut</dt>
+                <dd class="mt-1">
+                    {% if roadmap.is_active %}
+                    <span class="badge badge-success">Active</span>
+                    {% else %}
+                    <span class="badge badge-error">Inactive</span>
+                    {% endif %}
+                </dd>
+            </div>
+
+            <!-- Dernière modification -->
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Dernière Modification</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ roadmap.updated_at|date:"d/m/Y H:i" }}</dd>
+            </div>
+        </dl>
+
+        <!-- Configuration IA -->
+        <div class="mt-6">
+            <h2 class="text-lg font-semibold text-gray-900">Configuration IA</h2>
+            <p class="text-sm text-gray-700">Modèle utilisé : <span class="font-medium">{{ roadmap.config.model }}</span></p>
+            <p class="text-sm text-gray-700">Température : <span class="font-medium">{{ roadmap.config.temperature }}</span></p>
+            <p class="text-sm text-gray-700">Limite de Tokens : <span class="font-medium">{{ roadmap.config.max_tokens }}</span></p>
+        </div>
+
+        <!-- Historique des versions -->
+        <div class="mt-6">
+            <h2 class="text-lg font-semibold text-gray-900">Historique des Versions</h2>
+            {% if roadmap.versions.all %}
+                <ul class="mt-2 space-y-2">
+                    {% for version in roadmap.versions.all %}
+                    <li class="text-sm text-gray-700">
+                        Version {{ version.number }} - {{ version.updated_at|date:"d/m/Y H:i" }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="mt-2 text-sm text-gray-500">Aucune version disponible.</p>
+            {% endif %}
+        </div>
+
+        <!-- Sections associées -->
+        <div class="mt-6">
+            <h2 class="text-lg font-semibold text-gray-900">Sections</h2>
+            {% if roadmap.sections.all %}
+                <ul class="mt-2 space-y-2">
+                    {% for section in roadmap.sections.all %}
+                    <li class="text-sm text-gray-700">{{ section.title }} - {{ section.description }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="mt-2 text-sm text-gray-500">Aucune section associée à cette roadmap.</p>
+            {% endif %}
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="mt-6 flex justify-end gap-x-3">
+            <a href="{% url 'roadmaps_list' %}" class="btn">Retour</a>
+            <a href="{% url 'roadmaps_edit' roadmap.id %}" class="btn btn-primary">Modifier</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("Détails de la roadmap chargés");
+    });
+</script>
+{% endblock %}

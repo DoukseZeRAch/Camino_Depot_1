@@ -1,0 +1,34 @@
+# /roadmap_project/backend/requirements/base.txt
+
+# Framework principal
+Django==5.0.1
+
+# REST API
+djangorestframework==3.14.0
+
+# Gestion des variables d'environnement
+python-dotenv==1.0.0
+
+# Gestion des CORS
+django-cors-headers==4.3.1
+
+# MySQL
+mysqlclient==2.2.1
+
+# JWT Authentication
+djangorestframework-simplejwt==5.3.1
+
+# Validation et sérialisation
+pydantic==2.5.3
+
+# OpenAPI Documentation
+drf-spectacular==0.27.0
+
+# Gestion des timezones
+pytz==2023.3.post1
+
+
+python-dotenv==1.0.0
+
+
+openai==1.3.0  # Pour le service OpenAI

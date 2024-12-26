@@ -1,0 +1,164 @@
+/* Form Container */
+.form-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Form Header */
+.form-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.form-title {
+    font-size: 1.5rem;
+    color: var(--camino-text);
+    margin-bottom: var(--spacing-xs);
+}
+
+.form-description {
+    color: #6B7280;
+    font-size: 0.875rem;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-group--inline {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+}
+
+/* Labels */
+.form-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+    color: var(--camino-text);
+}
+
+.form-label-required::after {
+    content: "*";
+    color: var(--camino-error);
+    margin-left: var(--spacing-xs);
+}
+
+/* Inputs */
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    color: var(--camino-text);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--camino-orange);
+    box-shadow: 0 0 0 3px rgba(255, 157, 0, 0.1);
+}
+
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Select */
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%236B7280' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    padding-right: 2.5rem;
+}
+
+/* Checkboxes and Radios */
+.form-checkbox,
+.form-radio {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) 0;
+}
+
+.form-checkbox input[type="checkbox"],
+.form-radio input[type="radio"] {
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.25rem;
+}
+
+/* Helper Text */
+.form-helper {
+    margin-top: var(--spacing-xs);
+    font-size: 0.875rem;
+    color: #6B7280;
+}
+
+/* Error States */
+.form-input--error,
+.form-select--error,
+.form-textarea--error {
+    border-color: var(--camino-error);
+}
+
+.form-error-message {
+    margin-top: var(--spacing-xs);
+    font-size: 0.875rem;
+    color: var(--camino-error);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid #E5E7EB;
+}
+
+/* Loading State */
+.form-loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.form-loading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .form-group--inline {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .form-actions .button {
+        width: 100%;
+    }
+}

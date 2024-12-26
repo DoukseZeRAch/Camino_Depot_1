@@ -1,0 +1,120 @@
+{% extends "admin_interface/base.html" %}
+{% load static %}
+{% block title %}Détails de la Question{% endblock %}
+
+{% block content %}
+<div class="container py-6">
+    <!-- En-tête -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-semibold text-gray-900">Détails de la Question</h1>
+        <p class="mt-1 text-sm text-gray-500">Informations complètes concernant cette question.</p>
+    </div>
+
+    <div class="card">
+        <!-- Métadonnées -->
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Nom</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ question.name }}</dd>
+            </div>
+
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Type</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ question.type }}</dd>
+            </div>
+
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Catégorie</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ question.category|default:"Non définie" }}</dd>
+            </div>
+
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Ordre</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ question.order|default:"Non défini" }}</dd>
+            </div>
+
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Statut</dt>
+                <dd class="mt-1">
+                    {% if question.status == "ACTIVE" %}
+                    <span class="badge badge-success">Active</span>
+                    {% else %}
+                    <span class="badge badge-error">Inactive</span>
+                    {% endif %}
+                </dd>
+            </div>
+
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Créé le</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ question.created_at|date:"d/m/Y H:i" }}</dd>
+            </div>
+
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Mis à jour le</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ question.updated_at|date:"d/m/Y H:i" }}</dd>
+            </div>
+        </dl>
+
+        <!-- Configuration dynamique -->
+        {% if question.type == "MULTIPLE_CHOICE" %}
+        <div class="mt-6">
+            <h2 class="text-lg font-semibold text-gray-900">Options</h2>
+            <ul class="mt-2 space-y-2">
+                {% for option in question.options %}
+                <li class="text-sm text-gray-700">{{ option }}</li>
+                {% empty %}
+                <li class="text-sm text-gray-500">Aucune option disponible.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% elif question.type == "TABLE" %}
+        <div class="mt-6">
+            <h2 class="text-lg font-semibold text-gray-900">Colonnes</h2>
+            <ul class="mt-2 space-y-2">
+                {% for column in question.columns %}
+                <li class="text-sm text-gray-700">{{ column }}</li>
+                {% empty %}
+                <li class="text-sm text-gray-500">Aucune colonne disponible.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Prévisualisation Dynamique -->
+        <div class="mt-6">
+            <h2 class="text-lg font-semibold text-gray-900">Prévisualisation</h2>
+            <div id="preview-container" class="mt-4 p-4 border border-gray-300 rounded-md bg-gray-50">
+                <p class="text-sm text-gray-500">Chargement de la prévisualisation...</p>
+            </div>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="mt-6 flex justify-end gap-x-3">
+            <a href="{% url 'questions_list' %}" class="btn">Retour</a>
+            <a href="{% url 'questions_edit' question.id %}" class="btn btn-primary">Modifier</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const previewContainer = document.getElementById('preview-container');
+        
+        // Récupération des données pour la prévisualisation
+        fetch("/api/questions/{{ question.id }}/preview/")
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    previewContainer.innerHTML = `<p class="text-sm text-gray-900">${data.preview}</p>`;
+                } else {
+                    previewContainer.innerHTML = `<p class="text-sm text-red-600">Impossible de charger la prévisualisation.</p>`;
+                }
+            })
+            .catch(error => {
+                previewContainer.innerHTML = `<p class="text-sm text-red-600">Erreur : ${error.message}</p>`;
+            });
+    });
+</script>
+{% endblock %}

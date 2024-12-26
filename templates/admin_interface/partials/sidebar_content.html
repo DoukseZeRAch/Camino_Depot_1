@@ -1,0 +1,65 @@
+<!-- Sidebar -->
+<aside class="h-full bg-gray-800 text-white w-64 flex flex-col">
+    <!-- Logo -->
+    <div class="flex items-center justify-center h-16 border-b border-gray-700">
+        <img src="{% static 'images/logo.png' %}" alt="Logo Camino" class="h-10">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 px-2 py-4">
+        <!-- Tableau de bord -->
+        <a href="{% url 'dashboard' %}"
+           class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {% if request.resolver_match.url_name == 'dashboard' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}">
+            <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v14m4-10l2 2m0 0l-7 7-7-7" />
+            </svg>
+            Tableau de bord
+        </a>
+
+        <!-- Questions -->
+        <a href="{% url 'admin_interface:questions_list' %}"
+           class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {% if request.resolver_match.url_name == 'questions_list' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}">
+            <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m7-7l-7 7 7 7" />
+            </svg>
+            Questions
+        </a>
+
+        <!-- Utilisateurs -->
+        <a href="{% url 'admin_interface:users_list' %}"
+           class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {% if request.resolver_match.url_name == 'users_list' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}">
+            <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.656 0 3-1.343 3-3s-1.344-3-3-3-3 1.343-3 3 1.344 3 3 3zm0 2c-3.866 0-7 3.134-7 7h14c0-3.866-3.134-7-7-7z" />
+            </svg>
+            Utilisateurs
+        </a>
+
+        <!-- Réponses -->
+        <a href="{% url 'admin_interface:responses_list' %}"
+           class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {% if request.resolver_match.url_name == 'responses_list' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}">
+            <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Réponses
+        </a>
+
+        <!-- Roadmaps -->
+        <a href="{% url 'admin_interface:roadmaps_list' %}"
+           class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {% if request.resolver_match.url_name == 'roadmaps_list' %}bg-gray-900 text-white{% else %}text-gray-300 hover:bg-gray-700 hover:text-white{% endif %}">
+            <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6M9 8h6m2 11H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z" />
+            </svg>
+            Roadmaps
+        </a>
+    </nav>
+
+    <!-- Déconnexion -->
+    <div class="px-2 py-4 border-t border-gray-700">
+        <a href="{% url 'logout' %}" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+            <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v-8m0 0V4m0 12v4" />
+            </svg>
+            Déconnexion
+        </a>
+    </div>
+</aside>

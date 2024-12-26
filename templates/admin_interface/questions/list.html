@@ -1,0 +1,137 @@
+{% extends "admin_interface/base.html" %}
+{% load static %}
+{% block title %}Liste des Questions{% endblock %}
+
+{% block content %}
+<div class="container py-6">
+    <!-- En-tête avec bouton de création -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-900">Liste des Questions</h1>
+            <p class="mt-1 text-sm text-gray-500">Gérez toutes les questions associées au questionnaire Camino.</p>
+        </div>
+        <a href="{% url 'questions_create' %}" class="btn btn-primary">Nouvelle Question</a>
+    </div>
+
+    <!-- Filtres -->
+    <div x-data="{ filtersOpen: false }" class="mb-8 bg-white shadow rounded-lg">
+        <div class="border-b border-gray-200 px-4 py-5">
+            <h3 class="text-base font-semibold text-gray-900">
+                <button @click="filtersOpen = !filtersOpen" class="flex items-center">
+                    <span>Filtres</span>
+                    <svg :class="filtersOpen ? 'rotate-180' : ''" class="ml-2 h-5 w-5 transform transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </h3>
+        </div>
+        <div x-show="filtersOpen" class="px-4 py-5">
+            <form method="get" id="filters-form" class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- Type de question -->
+                <div>
+                    <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
+                    <select name="type" id="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm">
+                        <option value="">Tous les types</option>
+                        <option value="TEXT" {% if request.GET.type == 'TEXT' %}selected{% endif %}>Texte</option>
+                        <option value="MULTIPLE_CHOICE" {% if request.GET.type == 'MULTIPLE_CHOICE' %}selected{% endif %}>Choix multiple</option>
+                        <option value="TABLE" {% if request.GET.type == 'TABLE' %}selected{% endif %}>Tableau</option>
+                    </select>
+                </div>
+
+                <!-- Catégorie -->
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700">Catégorie</label>
+                    <select name="category" id="category" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm">
+                        <option value="">Toutes les catégories</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Statut -->
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700">Statut</label>
+                    <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm">
+                        <option value="">Tous les statuts</option>
+                        <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>Actives</option>
+                        <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>Inactives</option>
+                    </select>
+                </div>
+
+                <!-- Boutons -->
+                <div class="sm:col-span-2 lg:col-span-3 flex justify-end gap-3">
+                    <a href="{% url 'questions_list' %}" class="btn">Réinitialiser</a>
+                    <button type="submit" class="btn btn-primary">Appliquer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tableau des questions -->
+    <div class="mt-8 shadow ring-1 ring-gray-300 sm:rounded-lg">
+        {% if questions %}
+            <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="py-3 px-6 text-left text-sm font-semibold text-gray-900">Question</th>
+                        <th scope="col" class="py-3 px-6 text-left text-sm font-semibold text-gray-900">Type</th>
+                        <th scope="col" class="py-3 px-6 text-left text-sm font-semibold text-gray-900">Catégorie</th>
+                        <th scope="col" class="py-3 px-6 text-center text-sm font-semibold text-gray-900">Statut</th>
+                        <th scope="col" class="relative py-3 px-6 text-right text-sm font-semibold text-gray-900">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                    {% for question in questions %}
+                        <tr>
+                            <td class="py-4 px-6 text-sm font-medium text-gray-900">{{ question.text|truncatechars:50 }}</td>
+                            <td class="py-4 px-6 text-sm text-gray-500">{{ question.get_type_display }}</td>
+                            <td class="py-4 px-6 text-sm text-gray-500">{{ question.category }}</td>
+                            <td class="py-4 px-6 text-center">
+                                {% if question.is_active %}
+                                    <span class="badge badge-success">Active</span>
+                                {% else %}
+                                    <span class="badge badge-error">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-4 px-6 text-right">
+                                <a href="{% url 'questions_edit' question.id %}" class="text-blue-600 hover:text-blue-900">Éditer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="py-12 text-center">
+                <p class="text-sm text-gray-500">Aucune question trouvée.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+        <div class="mt-4 flex justify-between border-t border-gray-200 bg-white py-3 px-6">
+            <div class="flex-1">
+                <p class="text-sm text-gray-700">Affichage de {{ page_obj.start_index }} à {{ page_obj.end_index }} sur {{ paginator.count }} questions.</p>
+            </div>
+            <div>
+                <nav class="inline-flex -space-x-px" aria-label="Pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="btn">Précédent</a>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <span class="btn btn-primary">{{ i }}</span>
+                        {% else %}
+                            <a href="?page={{ i }}" class="btn">{{ i }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="btn">Suivant</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

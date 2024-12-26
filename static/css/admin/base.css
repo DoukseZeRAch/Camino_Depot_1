@@ -1,0 +1,158 @@
+/* Variables */
+:root {
+  /* Couleurs de la marque */
+  --camino-yellow: #FFD81B;
+  --camino-orange-light: #FFC65A;
+  --camino-orange: #FF9D00;
+  --camino-bg: #FFFBF2;
+  --camino-text: #1C2834;
+  
+  /* Couleurs fonctionnelles */
+  --camino-success: #10B981;
+  --camino-warning: #F59E0B;
+  --camino-error: #EF4444;
+  --camino-info: #3B82F6;
+  
+  /* Espacement */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+}
+
+/* Reset et base */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--camino-bg);
+  color: var(--camino-text);
+  line-height: 1.5;
+}
+
+/* Typographie */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sohne', sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: var(--spacing-md);
+}
+
+h1 {
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+/* Composants communs */
+.card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: var(--spacing-lg);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.button-primary {
+  background: linear-gradient(135deg, var(--camino-orange-light), var(--camino-orange));
+  color: white;
+}
+
+.button-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 157, 0, 0.2);
+}
+
+/* Status badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.badge-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--camino-success);
+}
+
+.badge-warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--camino-warning);
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-color: var(--camino-orange);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 157, 0, 0.1);
+}
+
+/* Layout utilitaires */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-4 {
+  gap: var(--spacing-md);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+}

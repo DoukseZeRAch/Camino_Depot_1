@@ -1,0 +1,167 @@
+{% extends "admin_interface/base.html" %}
+{% load static %}
+{% block title %}Modifier la Question{% endblock %}
+
+{% block content %}
+<div class="container py-6">
+    <!-- En-tête -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-semibold text-gray-900">Modifier la Question</h1>
+        <p class="mt-1 text-sm text-gray-500">Apportez des modifications aux détails de la question.</p>
+    </div>
+
+    <div class="card">
+        <form method="post" action="{% url 'questions_edit' question.id %}" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Nom de la question -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Nom de la Question</label>
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value="{{ question.name }}"
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea
+                    name="description"
+                    id="description"
+                    rows="4"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >{{ question.description }}</textarea>
+            </div>
+
+            <!-- Type de question -->
+            <div>
+                <label for="type" class="block text-sm font-medium text-gray-700">Type de Question</label>
+                <select
+                    name="type"
+                    id="type"
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >
+                    <option value="TEXT" {% if question.type == "TEXT" %}selected{% endif %}>Texte</option>
+                    <option value="MULTIPLE_CHOICE" {% if question.type == "MULTIPLE_CHOICE" %}selected{% endif %}>Choix Multiple</option>
+                    <option value="TABLE" {% if question.type == "TABLE" %}selected{% endif %}>Tableau</option>
+                </select>
+            </div>
+
+            <!-- Configuration dynamique selon le type -->
+
+            <!-- Configuration pour texte -->
+            <div id="text-config-container" class="{% if question.type != "TEXT" %}hidden{% endif %}">
+                <div>
+                    <label for="min_length" class="block text-sm font-medium text-gray-700">Longueur minimale</label>
+                    <input
+                        type="number"
+                        name="configuration[min_length]"
+                        id="min_length"
+                        min="0"
+                        value="{{ question.configuration.min_length|default:0 }}"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                    >
+                </div>
+                <div class="mt-4">
+                    <label for="max_length" class="block text-sm font-medium text-gray-700">Longueur maximale</label>
+                    <input
+                        type="number"
+                        name="configuration[max_length]"
+                        id="max_length"
+                        min="1"
+                        value="{{ question.configuration.max_length|default:1000 }}"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                    >
+                </div>
+            </div>
+
+            <!-- Configuration pour choix multiple -->
+            <div id="options-container" class="{% if question.type != "MULTIPLE_CHOICE" %}hidden{% endif %}">
+                <label for="options" class="block text-sm font-medium text-gray-700">Options (séparées par une virgule)</label>
+                <textarea
+                    name="options"
+                    id="options"
+                    rows="3"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >{{ question.options|join:", " }}</textarea>
+            </div>
+
+            <!-- Configuration pour tableau -->
+            <div id="table-config-container" class="{% if question.type != "TABLE" %}hidden{% endif %}">
+                <label for="columns" class="block text-sm font-medium text-gray-700">Colonnes du tableau (séparées par une virgule)</label>
+                <textarea
+                    name="columns"
+                    id="columns"
+                    rows="3"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >{{ question.columns|join:", " }}</textarea>
+            </div>
+
+            <!-- Catégorie -->
+            <div>
+                <label for="category" class="block text-sm font-medium text-gray-700">Catégorie</label>
+                <select
+                    name="category"
+                    id="category"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >
+                    <option value="">-- Sélectionnez une catégorie --</option>
+                    <option value="general" {% if question.category == "general" %}selected{% endif %}>Général</option>
+                    <option value="technical" {% if question.category == "technical" %}selected{% endif %}>Technique</option>
+                    <option value="other" {% if question.category == "other" %}selected{% endif %}>Autre</option>
+                </select>
+            </div>
+
+            <!-- Ordre -->
+            <div>
+                <label for="order" class="block text-sm font-medium text-gray-700">Ordre</label>
+                <input
+                    type="number"
+                    name="order"
+                    id="order"
+                    min="1"
+                    value="{{ question.order }}"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="mt-6 flex justify-end gap-x-3">
+                <a href="{% url 'questions_list' %}" class="btn">Annuler</a>
+                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const typeSelect = document.getElementById('type');
+        const textConfigContainer = document.getElementById('text-config-container');
+        const optionsContainer = document.getElementById('options-container');
+        const tableConfigContainer = document.getElementById('table-config-container');
+
+        typeSelect.addEventListener('change', function () {
+            textConfigContainer.classList.add('hidden');
+            optionsContainer.classList.add('hidden');
+            tableConfigContainer.classList.add('hidden');
+
+            if (this.value === 'TEXT') {
+                textConfigContainer.classList.remove('hidden');
+            } else if (this.value === 'MULTIPLE_CHOICE') {
+                optionsContainer.classList.remove('hidden');
+            } else if (this.value === 'TABLE') {
+                tableConfigContainer.classList.remove('hidden');
+            }
+        });
+    });
+</script>
+{% endblock %}

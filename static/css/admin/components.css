@@ -1,0 +1,157 @@
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--camino-orange-light), var(--camino-orange));
+    color: white;
+}
+
+.btn-secondary {
+    background: white;
+    border: 1px solid #E5E7EB;
+    color: var(--camino-text);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--camino-orange);
+    color: var(--camino-orange);
+}
+
+/* Badges */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.badge-success {
+    background-color: #DEF7EC;
+    color: var(--camino-success);
+}
+
+.badge-warning {
+    background-color: #FEF3C7;
+    color: var(--camino-warning);
+}
+
+.badge-error {
+    background-color: #FEE2E2;
+    color: var(--camino-error);
+}
+
+/* Cards */
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.card-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.card-body {
+    padding: var(--spacing-lg);
+}
+
+.card-footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid #E5E7EB;
+    background-color: #F9FAFB;
+}
+
+/* Alerts */
+.alert {
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.alert-success {
+    background-color: #DEF7EC;
+    border-left: 4px solid var(--camino-success);
+}
+
+.alert-warning {
+    background-color: #FEF3C7;
+    border-left: 4px solid var(--camino-warning);
+}
+
+.alert-error {
+    background-color: #FEE2E2;
+    border-left: 4px solid var(--camino-error);
+}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-content {
+    position: absolute;
+    z-index: 10;
+    padding: 0.5rem 1rem;
+    background-color: var(--camino-text);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+/* Modals */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.modal-body {
+    padding: var(--spacing-lg);
+}
+
+.modal-footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid #E5E7EB;
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+}

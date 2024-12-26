@@ -1,0 +1,96 @@
+{% extends "admin_interface/base.html" %}
+{% load static %}
+{% block title %}Analytics - Tableau de Bord{% endblock %}
+
+{% block content %}
+<div class="py-6">
+    <!-- En-tête -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-semibold text-gray-900">Tableau de bord des Analytics</h1>
+        <p class="mt-1 text-sm text-gray-500">Visualisez les métriques et suivez les activités récentes</p>
+    </div>
+
+    <!-- Filtres -->
+    <div class="bg-white shadow sm:rounded-lg mb-8 p-6">
+        <h2 class="text-lg font-semibold text-gray-900">Filtres</h2>
+        <form id="filters-form" class="mt-4 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2 lg:grid-cols-4">
+            <!-- Période -->
+            <div>
+                <label for="period" class="block text-sm font-medium text-gray-700">Période</label>
+                <select id="period" name="period" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <option value="day">Aujourd'hui</option>
+                    <option value="week">Cette semaine</option>
+                    <option value="month">Ce mois</option>
+                    <option value="year">Cette année</option>
+                </select>
+            </div>
+            <!-- Type d'entité -->
+            <div>
+                <label for="entity" class="block text-sm font-medium text-gray-700">Type d'entité</label>
+                <select id="entity" name="entity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <option value="questions">Questions</option>
+                    <option value="responses">Réponses</option>
+                    <option value="roadmaps">Roadmaps</option>
+                </select>
+            </div>
+            <!-- Boutons -->
+            <div class="sm:col-span-2 lg:col-span-4 flex justify-end">
+                <button type="button" id="apply-filters" class="btn btn-primary">Appliquer les filtres</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Section des métriques -->
+    <div id="kpi-section" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Cartes KPI (chargées dynamiquement) -->
+        <div id="kpi-questions" class="stat-card">
+            <h3 class="stat-card__title">Total Questions</h3>
+            <p id="kpi-questions-value" class="stat-card__value">--</p>
+        </div>
+        <div id="kpi-responses" class="stat-card">
+            <h3 class="stat-card__title">Total Réponses</h3>
+            <p id="kpi-responses-value" class="stat-card__value">--</p>
+        </div>
+        <div id="kpi-roadmaps" class="stat-card">
+            <h3 class="stat-card__title">Total Roadmaps</h3>
+            <p id="kpi-roadmaps-value" class="stat-card__value">--</p>
+        </div>
+        <div id="kpi-users" class="stat-card">
+            <h3 class="stat-card__title">Utilisateurs Actifs</h3>
+            <p id="kpi-users-value" class="stat-card__value">--</p>
+        </div>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="mt-8">
+        <h2 class="text-lg font-semibold text-gray-900">Graphiques</h2>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 mt-6">
+            <!-- Graphique 1 : Réponses par catégorie -->
+            <div class="card">
+                <h3 class="card-title">Réponses par Catégorie</h3>
+                <canvas id="responses-by-category-chart" class="mt-4 h-64"></canvas>
+            </div>
+            <!-- Graphique 2 : Utilisateurs par rôle -->
+            <div class="card">
+                <h3 class="card-title">Utilisateurs par Rôle</h3>
+                <canvas id="users-by-role-chart" class="mt-4 h-64"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activités récentes -->
+    <div class="mt-8">
+        <h2 class="text-lg font-semibold text-gray-900">Activités Récentes</h2>
+        <div id="recent-activities" class="card">
+            <ul id="recent-activities-list" class="divide-y divide-gray-200">
+                <li class="py-3 text-sm text-gray-500">Chargement des activités...</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

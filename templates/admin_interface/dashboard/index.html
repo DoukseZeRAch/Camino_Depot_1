@@ -1,0 +1,63 @@
+{% extends "admin_interface/base.html" %}
+{% load static %}
+{% block title %}Tableau de Bord{% endblock %}
+
+{% block content %}
+<div class="container py-6">
+    <!-- En-tête -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-semibold text-gray-900">Tableau de Bord Camino</h1>
+        <p class="mt-1 text-sm text-gray-500">Visualisez les métriques clés et les activités récentes.</p>
+    </div>
+
+    <!-- Section des KPI -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div id="kpi-questions" class="stat-card">
+            <h3 class="stat-card__title">Total Questions</h3>
+            <p id="kpi-questions-value" class="stat-card__value">--</p>
+        </div>
+        <div id="kpi-responses" class="stat-card">
+            <h3 class="stat-card__title">Total Réponses</h3>
+            <p id="kpi-responses-value" class="stat-card__value">--</p>
+        </div>
+        <div id="kpi-roadmaps" class="stat-card">
+            <h3 class="stat-card__title">Total Roadmaps</h3>
+            <p id="kpi-roadmaps-value" class="stat-card__value">--</p>
+        </div>
+        <div id="kpi-users" class="stat-card">
+            <h3 class="stat-card__title">Utilisateurs Actifs</h3>
+            <p id="kpi-users-value" class="stat-card__value">--</p>
+        </div>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="mt-8">
+        <h2 class="text-lg font-semibold text-gray-900">Graphiques</h2>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 mt-6">
+            <div class="card">
+                <h3 class="card-title">Réponses par Catégorie</h3>
+                <canvas id="responses-by-category-chart" class="mt-4 h-64"></canvas>
+            </div>
+            <div class="card">
+                <h3 class="card-title">Utilisateurs par Rôle</h3>
+                <canvas id="users-by-role-chart" class="mt-4 h-64"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activités Récentes -->
+    <div class="mt-8">
+        <h2 class="text-lg font-semibold text-gray-900">Activités Récentes</h2>
+        <div class="card">
+            <ul id="recent-activities-list" class="divide-y divide-gray-200">
+                <li class="py-3 text-sm text-gray-500">Chargement des activités...</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

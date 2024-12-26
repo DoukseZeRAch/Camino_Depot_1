@@ -1,0 +1,75 @@
+{% extends "admin_interface/base.html" %}
+{% load static %}
+{% block title %}Détails de la Réponse{% endblock %}
+
+{% block content %}
+<div class="container py-6">
+    <!-- En-tête -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-semibold text-gray-900">Détails de la Réponse</h1>
+        <p class="mt-1 text-sm text-gray-500">Informations complètes sur cette réponse utilisateur.</p>
+    </div>
+
+    <div class="card">
+        <!-- Détails de la réponse -->
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+            <!-- Question -->
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Question</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ response.question.text }}</dd>
+            </div>
+
+            <!-- Type de question -->
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Type de Question</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ response.question.type }}</dd>
+            </div>
+
+            <!-- Statut -->
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Statut</dt>
+                <dd class="mt-1">
+                    {% if response.is_active %}
+                    <span class="badge badge-success">Active</span>
+                    {% else %}
+                    <span class="badge badge-error">Inactive</span>
+                    {% endif %}
+                </dd>
+            </div>
+
+            <!-- Dates -->
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Créé le</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ response.created_at|date:"d/m/Y H:i" }}</dd>
+            </div>
+
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Mis à jour le</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ response.updated_at|date:"d/m/Y H:i" }}</dd>
+            </div>
+        </dl>
+
+        <!-- Contenu de la réponse -->
+        <div class="mt-6">
+            <h2 class="text-lg font-semibold text-gray-900">Contenu de la Réponse</h2>
+            <div class="mt-4 p-4 border border-gray-300 rounded-md bg-gray-50">
+                <p class="text-sm text-gray-700">{{ response.content }}</p>
+            </div>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="mt-6 flex justify-end gap-x-3">
+            <a href="{% url 'responses_list' %}" class="btn">Retour</a>
+            <a href="{% url 'responses_edit' response.id %}" class="btn btn-primary">Modifier</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Placeholder pour toute logique JS supplémentaire sur la page des détails
+        console.log('Page des détails de la réponse chargée.');
+    });
+</script>
+{% endblock %}

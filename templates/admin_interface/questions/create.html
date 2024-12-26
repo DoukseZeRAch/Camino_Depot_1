@@ -1,0 +1,146 @@
+{% extends "admin_interface/base.html" %}
+{% load static %}
+{% block title %}Créer une Nouvelle Question{% endblock %}
+
+{% block content %}
+<div class="container py-6">
+    <div class="mb-6">
+        <h1 class="text-2xl font-semibold text-gray-900">Créer une Nouvelle Question</h1>
+        <p class="mt-1 text-sm text-gray-500">Remplissez les champs ci-dessous pour ajouter une nouvelle question.</p>
+    </div>
+
+    <div class="card">
+        <form method="post" action="{% url 'questions_create' %}" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Nom de la question -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Nom de la Question</label>
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >
+                {% if errors.name %}
+                <p class="mt-2 text-sm text-red-600">{{ errors.name }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea
+                    name="description"
+                    id="description"
+                    rows="4"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                ></textarea>
+                {% if errors.description %}
+                <p class="mt-2 text-sm text-red-600">{{ errors.description }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Type de question -->
+            <div>
+                <label for="type" class="block text-sm font-medium text-gray-700">Type de Question</label>
+                <select
+                    name="type"
+                    id="type"
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >
+                    <option value="">-- Sélectionnez un type --</option>
+                    <option value="TEXT">Texte</option>
+                    <option value="MULTIPLE_CHOICE">Choix Multiple</option>
+                    <option value="TABLE">Tableau</option>
+                </select>
+                {% if errors.type %}
+                <p class="mt-2 text-sm text-red-600">{{ errors.type }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Configuration dynamique selon le type -->
+
+            <!-- Configuration pour choix multiple -->
+            <div id="options-container" class="hidden">
+                <label for="options" class="block text-sm font-medium text-gray-700">Options (séparées par une virgule)</label>
+                <textarea
+                    name="options"
+                    id="options"
+                    rows="3"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                ></textarea>
+            </div>
+
+            <!-- Configuration pour tableau -->
+            <div id="table-config-container" class="hidden">
+                <label for="columns" class="block text-sm font-medium text-gray-700">Colonnes du tableau (séparées par une virgule)</label>
+                <textarea
+                    name="columns"
+                    id="columns"
+                    rows="3"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                ></textarea>
+            </div>
+
+            <!-- Catégorie -->
+            <div>
+                <label for="category" class="block text-sm font-medium text-gray-700">Catégorie</label>
+                <select
+                    name="category"
+                    id="category"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >
+                    <option value="">-- Sélectionnez une catégorie --</option>
+                    <option value="general">Général</option>
+                    <option value="technical">Technique</option>
+                    <option value="other">Autre</option>
+                </select>
+            </div>
+
+            <!-- Ordre -->
+            <div>
+                <label for="order" class="block text-sm font-medium text-gray-700">Ordre</label>
+                <input
+                    type="number"
+                    name="order"
+                    id="order"
+                    min="1"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-camino-orange focus:border-camino-orange sm:text-sm"
+                >
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="flex justify-end gap-x-3">
+                <a href="{% url 'questions_list' %}" class="btn">Annuler</a>
+                <button type="submit" class="btn btn-primary">Créer</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const typeSelect = document.getElementById('type');
+        const optionsContainer = document.getElementById('options-container');
+        const tableConfigContainer = document.getElementById('table-config-container');
+
+        typeSelect.addEventListener('change', function () {
+            if (this.value === 'MULTIPLE_CHOICE') {
+                optionsContainer.classList.remove('hidden');
+                tableConfigContainer.classList.add('hidden');
+            } else if (this.value === 'TABLE') {
+                tableConfigContainer.classList.remove('hidden');
+                optionsContainer.classList.add('hidden');
+            } else {
+                optionsContainer.classList.add('hidden');
+                tableConfigContainer.classList.add('hidden');
+            }
+        });
+    });
+</script>
+{% endblock %}

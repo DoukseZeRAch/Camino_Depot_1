@@ -1,0 +1,8 @@
+# Créez un fichier .gitignore
+.env
+__pycache__/
+*.pyc
+node_modules/
+staticfiles/
+*.log
+.venv/
